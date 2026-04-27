@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lola Boss Creative Studio | Lily</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #C97B84;
+  --rose-deep: #A85F6A;
+  --blush: #F2DADA;
+  --blush-light: #FAF0F0;
+  --cream: #FAF7F2;
+  --charcoal: #1C1414;
+  --mid: #7A6565;
+  --gold: #C9A96E;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Heebo', sans-serif; background: var(--cream); color: var(--charcoal); overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+#cur { width: 7px; height: 7px; background: var(--rose); border-radius: 50%; position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%,-50%); transition: width .2s, height .2s; }
+#cur-r { width: 28px; height: 28px; border: 1px solid var(--rose); border-radius: 50%; position: fixed; z-index: 9998; pointer-events: none; transform: translate(-50%,-50%); opacity: .45; transition: opacity .3s; }
+#cursorGlow { position:fixed;z-index:9990;pointer-events:none;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle, rgba(201,123,132,.055) 0%, transparent 70%);transform:translate(-50%,-50%);transition:opacity .4s; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+nav ul { display: flex; gap: 8px; list-style: none; }
+nav ul a {
+  font-size: 13px; letter-spacing: .2px; text-decoration: none;
+  color: var(--charcoal); font-weight: 400; transition: all .2s;
+  padding: 8px 18px; border-radius: 50px;
+  border: 1px solid rgba(0,0,0,.1);
+}
+nav ul a:hover { color: var(--rose); border-color: var(--rose); }
+.nav-btn {
+  font-size: 13px; background: var(--charcoal); color: white;
+  padding: 10px 24px; border-radius: 50px; text-decoration: none;
+  transition: all .25s; border: 1px solid var(--charcoal); font-weight: 500;
+}
+.nav-btn:hover { background: var(--rose); border-color: var(--rose); }
+.logo-img { height: 60px; width: auto; display: block; }
+
+/* HERO */
+.hero { height: 100vh; width: 100%; position: relative; overflow: hidden; display: flex; align-items: flex-end; }
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('/mnt/user-data/uploads/Lily___Moshe__48_.JPG');
+  background-size: cover; background-position: 28% center;
+  transform: scale(1.05); transition: transform 7s ease-out;
+}
+.hero-bg.loaded { transform: scale(1); }
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(28,20,20,.95) 0%, rgba(28,20,20,.45) 55%, rgba(28,20,20,.2) 100%);
+}
+.hero-mesh {
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 45% at 75% 15%, rgba(201,123,132,.2) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 55% at 15% 85%, rgba(197,210,194,.1) 0%, transparent 65%);
+  mix-blend-mode:screen;
+}
+.hero-content { position: relative; z-index: 2; padding: 0 60px 72px; width: 100%; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; opacity: 0; animation: fadeUp .7s .2s forwards;
+}
+.hero-tag-dot { width: 5px; height: 5px; background: var(--rose); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.hero-tag span { font-size: 11px; letter-spacing: 2.5px; color: rgba(255,255,255,.5); font-weight: 300; }
+.hero h1 {
+  font-family: 'Heebo', sans-serif;
+  font-size: clamp(78px, 13vw, 168px);
+  font-weight: 900; line-height: .88; color: white;
+  letter-spacing: -4px; text-transform: uppercase;
+  opacity: 0; animation: fadeUp .9s .35s forwards;
+}
+.hero h1 em { font-style: normal; color: var(--rose); display: block; }
+.hero-bottom {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-top: 28px; opacity: 0; animation: fadeUp .7s .6s forwards;
+  flex-wrap: wrap; gap: 16px;
+}
+.hero-desc { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,.5); max-width: 360px; font-weight: 300; }
+.hero-link {
+  color: white; text-decoration: none; font-size: 13px; letter-spacing: .5px;
+  background: var(--rose); padding: 13px 30px; border-radius: 50px;
+  transition: background .2s; white-space: nowrap; font-weight: 500;
+}
+.hero-link:hover { background: var(--rose-deep); }
+.scroll-hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeUp .7s 1s forwards; }
+.scroll-line { width: 1px; height: 44px; background: rgba(255,255,255,.2); position: relative; overflow: hidden; }
+.scroll-line::after { content:''; position: absolute; top:-100%; left:0; width:100%; height:100%; background: var(--rose); animation: scrollDown 1.8s 1.5s ease infinite; }
+@keyframes scrollDown{0%{top:-100%}100%{top:200%}}
+
+/* STATS BAR */
+.stats-bar { background: var(--charcoal); padding: 56px 60px; }
+.stats-bar .inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-item { text-align: center; padding: 0 20px; border-left: 1px solid rgba(255,255,255,.08); }
+.stat-item:last-child { border-left: none; }
+.stat-n { font-family: 'Heebo', sans-serif; font-weight: 900; font-size: clamp(52px, 7vw, 88px); color: var(--rose); line-height: 1; letter-spacing: -3px; }
+.stat-l { font-size: 14px; color: rgba(255,255,255,.45); margin-top: 8px; font-weight: 300; }
+
+/* ABOUT */
+.about {
+  padding: 110px 60px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.about-label { font-size: 11px; letter-spacing: 3px; color: var(--rose); margin-bottom: 18px; font-weight: 500; text-transform: uppercase; }
+.about h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 4.5vw, 62px); font-weight: 800; line-height: 1.0; margin-bottom: 24px; letter-spacing: -2px; }
+.about h2 em { font-style: normal; color: var(--rose); }
+.about p { font-size: 15px; line-height: 1.9; color: var(--mid); font-weight: 300; margin-bottom: 14px; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.skill { background: var(--blush); color: var(--rose-deep); font-size: 11px; padding: 6px 16px; border-radius: 50px; font-weight: 500; }
+.about-img-side { position: relative; height: 500px; }
+.about-photo { width: 82%; height: 440px; object-fit: cover; object-position: 30% top; border-radius: 20px; position: absolute; left: 0; top: 0; }
+.about-stat { position: absolute; bottom: 0; right: 0; background: var(--rose); border-radius: 20px; padding: 24px 28px; color: white; text-align: center; }
+.about-stat .n { font-family: 'Heebo', sans-serif; font-size: 44px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+.about-stat .l { font-size: 12px; opacity: .8; margin-top: 6px; font-weight: 300; }
+
+/* SERVICES */
+.services { background: var(--charcoal); padding: 110px 60px; }
+.services-inner { max-width: 1200px; margin: 0 auto; }
+.services-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; flex-wrap: wrap; gap: 20px; }
+.services-head h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 5vw, 68px); font-weight: 800; color: white; line-height: 1.0; letter-spacing: -2px; }
+.services-head h2 em { font-style: normal; color: var(--rose); }
+.services-head p { font-size: 14px; color: rgba(255,255,255,.3); max-width: 220px; line-height: 1.7; font-weight: 300; }
+.svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.svc-card {
+  background: rgba(255,255,255,.04); border-radius: 20px; padding: 36px 40px;
+  border: 1px solid rgba(255,255,255,.07); transition: all .35s; cursor: default; position: relative; overflow: hidden;
+}
+.svc-card::before { content:''; position: absolute; inset:0; border-radius: inherit; background: rgba(201,123,132,.06); opacity:0; transition: opacity .35s; }
+.svc-card:hover { border-color: rgba(201,123,132,.25); transform: translateY(-4px); }
+.svc-card:hover::before { opacity: 1; }
+.svc-card-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+.svc-card-n { font-size: 11px; letter-spacing: 2px; color: var(--rose); margin-bottom: 12px; font-weight: 500; text-transform: uppercase; }
+.svc-card-name { font-family: 'Heebo', sans-serif; font-size: clamp(20px, 2vw, 26px); font-weight: 800; color: white; letter-spacing: -1px; }
+.svc-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+.svc-card-tag { font-size: 10px; letter-spacing: .5px; color: rgba(255,255,255,.3); border: 1px solid rgba(255,255,255,.1); padding: 4px 12px; border-radius: 50px; }
+.svc-card-arr { display: inline-block; margin-top: 20px; color: var(--rose); font-size: 16px; transition: transform .3s; }
+.svc-card:hover .svc-card-arr { transform: translateX(-6px); }
+
+/* PORTFOLIO */
+.portfolio { padding: 110px 60px; background: var(--cream); }
+.portfolio-inner { max-width: 1200px; margin: 0 auto; }
+.portfolio-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 64px; flex-wrap: wrap; gap: 16px; }
+.portfolio-head h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 5vw, 68px); font-weight: 800; line-height: 1.0; letter-spacing: -2px; }
+.portfolio-head h2 em { font-style: normal; color: var(--rose); }
+.cat-title { font-size: 11px; letter-spacing: 3px; color: var(--rose); margin-bottom: 20px; font-weight: 500; text-transform: uppercase; padding-top: 48px; border-top: 1px solid rgba(201,123,132,.15); }
+.cat-title:first-of-type { padding-top: 0; border-top: none; }
+.port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+.port-grid-2 { grid-template-columns: 1.5fr 1fr; }
+.port-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.pitem { overflow: hidden; position: relative; cursor: pointer; border-radius: 14px; }
+.pitem-tall { aspect-ratio: 3/4; }
+.pitem-wide { aspect-ratio: 4/3; }
+.pitem-sq { aspect-ratio: 1; }
+.pitem img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.pitem:hover img { transform: scale(1.06); }
+.pitem-info {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(to top, rgba(28,20,20,.88) 0%, transparent 55%);
+  opacity: 0; transition: opacity .3s;
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 24px;
+}
+.pitem:hover .pitem-info { opacity: 1; }
+.pitem-info .pname { font-family: 'Heebo', sans-serif; font-size: 16px; font-weight: 700; color: white; }
+.pitem-info .pcat { font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,.55); margin-top: 4px; }
+
+/* PORT SUB TITLE */
+.port-sub-title { font-size: 14px; color: var(--mid); margin-bottom: 20px; margin-top: -12px; font-weight: 300; }
+
+/* CASE STUDY */
+.case-study { background: var(--charcoal); padding: 80px 60px; }
+.cs-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 80px; align-items: center; }
+.cs-label { font-size: 11px; letter-spacing: 3px; color: var(--rose); margin-bottom: 14px; text-transform: uppercase; font-weight: 500; }
+.cs-inner h2 { font-family: 'Heebo', sans-serif; font-size: clamp(32px, 4vw, 52px); font-weight: 800; color: white; line-height: 1.05; margin-bottom: 20px; letter-spacing: -2px; }
+.cs-inner h2 em { font-style: normal; color: var(--rose); }
+.cs-inner p { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,.45); font-weight: 300; max-width: 560px; }
+.cs-stats { display: flex; gap: 48px; }
+.cs-stat { text-align: center; }
+.cs-n { font-family: 'Heebo', sans-serif; font-weight: 900; font-size: clamp(28px, 3vw, 42px); color: var(--rose); letter-spacing: -1px; line-height: 1; }
+.cs-l { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 6px; font-weight: 300; }
+@media(max-width:1024px){ .case-study{padding:60px 24px;} .cs-inner{grid-template-columns:1fr;gap:40px;} .cs-stats{justify-content:center;} }
+
+/* LIFEBOOKS */
+.lifebooks { background: var(--charcoal); padding: 110px 60px; }
+.lb-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.lb-label { font-size: 11px; letter-spacing: 3px; color: var(--rose); margin-bottom: 20px; text-transform: uppercase; font-weight: 500; }
+.lb-h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 4.5vw, 62px); font-weight: 800; color: white; line-height: 1.0; margin-bottom: 20px; letter-spacing: -2px; }
+.lb-h2 em { font-style: normal; color: var(--rose); }
+.lb-p { font-size: 15px; line-height: 1.85; color: rgba(255,255,255,.4); font-weight: 300; margin-bottom: 32px; }
+.lb-feats { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+.lb-feat { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,.55); }
+.lb-dot { width: 4px; height: 4px; background: var(--rose); border-radius: 50%; flex-shrink: 0; }
+.btn-rose { display: inline-block; background: var(--rose); color: white; padding: 14px 32px; border-radius: 50px; text-decoration: none; font-size: 13px; letter-spacing: .5px; font-weight: 500; transition: all .3s; }
+.btn-rose:hover { background: var(--rose-deep); transform: translateY(-2px); }
+.lb-visual { position: relative; height: 440px; }
+.lb-card { width: 100%; height: 100%; background: linear-gradient(145deg, #2a1f20, #3d2b2c); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.lb-card::before { content:''; position: absolute; inset:0; background: repeating-linear-gradient(45deg,transparent,transparent 50px,rgba(201,123,132,.04) 50px,rgba(201,123,132,.04) 51px); }
+.lb-card-title { font-family: 'Heebo', sans-serif; font-size: 52px; font-weight: 900; color: rgba(255,255,255,.1); text-align: center; position: relative; z-index: 1; letter-spacing: -2px; text-transform: uppercase; }
+.lb-card-sub { font-size: 10px; letter-spacing: 4px; color: var(--rose); margin-top: 10px; position: relative; z-index: 1; text-transform: uppercase; }
+.lb-badge { position: absolute; bottom: 24px; left: -10px; background: var(--rose); color: white; border-radius: 14px; padding: 14px 18px; font-size: 12px; box-shadow: 0 8px 24px rgba(168,95,106,.4); }
+.lb-badge strong { display: block; font-family: 'Heebo', sans-serif; font-size: 22px; font-weight: 800; }
+
+/* TESTIMONIALS */
+.testi { padding: 110px 60px; background: var(--blush-light); }
+.testi-inner { max-width: 1200px; margin: 0 auto; }
+.testi h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 5vw, 68px); font-weight: 800; line-height: 1.0; margin-bottom: 60px; letter-spacing: -2px; }
+.testi h2 em { font-style: normal; color: var(--rose); }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.tcard { background: white; padding: 44px 36px; transition: all .3s; border-radius: 20px; border: 1px solid rgba(201,123,132,.1); }
+.tcard:hover { box-shadow: 0 12px 40px rgba(201,123,132,.12); transform: translateY(-4px); }
+.stars { color: var(--gold); font-size: 13px; letter-spacing: 2px; margin-bottom: 20px; }
+.tcard blockquote { font-family: 'Heebo', sans-serif; font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--charcoal); margin-bottom: 24px; }
+.tauthor { display: flex; align-items: center; gap: 12px; }
+.tav { width: 40px; height: 40px; border-radius: 50%; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--rose-deep); font-weight: 700; flex-shrink: 0; }
+.tname { font-size: 14px; font-weight: 700; }
+.ttitle { font-size: 12px; color: var(--mid); margin-top: 2px; }
+
+/* CONTACT */
+.contact { padding: 110px 60px; background: var(--charcoal); }
+.contact-inner { max-width: 560px; margin: 0 auto; }
+.contact-label { font-size: 11px; letter-spacing: 3px; color: var(--rose); margin-bottom: 16px; text-align: center; text-transform: uppercase; font-weight: 500; }
+.contact h2 { font-family: 'Heebo', sans-serif; font-size: clamp(38px, 5vw, 62px); font-weight: 800; color: white; text-align: center; margin-bottom: 8px; letter-spacing: -2px; }
+.contact h2 em { font-style: normal; color: var(--rose); }
+.contact-sub { font-size: 14px; color: rgba(255,255,255,.35); text-align: center; margin-bottom: 48px; font-weight: 300; }
+.fg { margin-bottom: 24px; }
+.fg label { display: block; font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,.3); margin-bottom: 8px; text-transform: uppercase; }
+.fg input, .fg select, .fg textarea {
+  width: 100%; padding: 13px 0;
+  background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,.12);
+  font-family: 'Heebo', sans-serif; font-size: 14px; color: white;
+  outline: none; transition: border-color .2s; direction: rtl; border-radius: 0;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-bottom-color: var(--rose); }
+.fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,.18); }
+.fg select { appearance: none; cursor: pointer; }
+.fg select option { background: var(--charcoal); color: white; }
+.fg textarea { resize: none; min-height: 88px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.fsub { width: 100%; background: var(--rose); color: white; border: none; padding: 16px; font-family: 'Heebo', sans-serif; font-size: 13px; letter-spacing: 1px; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all .3s; margin-top: 8px; }
+.fsub:hover { background: var(--rose-deep); }
+#formSuccess { display:none; text-align:center; color:var(--rose); margin-top:16px; font-size:20px; font-weight:700; }
+
+/* WHATSAPP */
+.wa-btn { position: fixed; bottom: 28px; left: 28px; z-index: 999; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none; transition: transform .25s; animation: waPulse 2.5s ease infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 28px; height: 28px; fill: white; }
+@keyframes waPulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 32px rgba(37,211,102,.65)} }
+
+/* FOOTER */
+footer { background: #110d0d; padding: 32px 60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: 'Heebo', sans-serif; font-size: 20px; font-weight: 800; color: rgba(255,255,255,.3); letter-spacing: -1px; }
+footer p { font-size: 12px; color: rgba(255,255,255,.15); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,.25); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--rose); }
+
+/* SHIMMER DIVIDER */
+.shimmer-div { height:1px; background:rgba(201,123,132,.1); position:relative; overflow:hidden; }
+.shimmer-div::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(90deg,transparent,rgba(201,123,132,.5),transparent); animation:shimmerMove 2.8s ease infinite; }
+@keyframes shimmerMove{to{left:200%}}
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)} }
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* STAGGER */
+.stagger-parent .stagger-line { display:block; overflow:hidden; }
+.stagger-parent .stagger-line span { display:block; transform:translateY(105%); transition:transform .85s cubic-bezier(.16,1,.3,1); }
+.stagger-parent.visible .stagger-line span { transform:translateY(0); }
+.stagger-parent .stagger-line:nth-child(2) span { transition-delay:.13s; }
+
+/* TILT */
+.tilt { transform-style:preserve-3d; transition:transform .12s ease; will-change:transform; }
+
+/* BORDER BEAM */
+.beam { position:relative; }
+.beam::after {
+  content:''; position:absolute; inset:-1px; border-radius:inherit;
+  background:linear-gradient(90deg,transparent 0%,var(--rose) 40%,var(--blush) 60%,transparent 100%);
+  background-size:200% 100%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  opacity:0; transition:opacity .3s; animation:beamSlide 2s linear infinite;
+}
+.beam:hover::after { opacity:1; }
+@keyframes beamSlide{from{background-position:200% 0}to{background-position:-200% 0}}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav { padding: 16px 24px; }
+  nav ul { gap: 6px; }
+  .hero-content { padding: 0 24px 60px; }
+  .about { padding: 80px 24px; grid-template-columns: 1fr; }
+  .about-img-side { display: none; }
+  .services { padding: 80px 24px; }
+  .services-inner { padding: 0; }
+  .svc-grid { grid-template-columns: 1fr; }
+  .portfolio { padding: 80px 24px; }
+  .portfolio-inner { padding: 0; }
+  .lifebooks { padding: 80px 24px; }
+  .lb-inner { grid-template-columns: 1fr; }
+  .lb-visual { display: none; }
+  .testi { padding: 80px 24px; }
+  .testi-inner { padding: 0; }
+  .testi-grid { grid-template-columns: 1fr; gap: 12px; }
+  .contact { padding: 80px 24px; }
+  .stats-bar { padding: 40px 24px; }
+  .stats-bar .inner { grid-template-columns: repeat(2,1fr); gap: 24px; }
+  .port-grid { grid-template-columns: 1fr 1fr; }
+  .port-grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:640px){
+  nav ul { display: none; }
+  .hero h1 { font-size: 62px; letter-spacing: -2px; }
+  .frow { grid-template-columns: 1fr; gap: 0; }
+  footer { flex-direction: column; text-align: center; }
+  body { cursor: auto; }
+  #cur,#cur-r { display: none; }
+  .stats-bar .inner { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="cursorGlow"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <img src="logo.svg" alt="Lola Boss Creative Studio" class="logo-img">
+  <ul>
+    <li><a href="#about">עלי</a></li>
+    <li><a href="#services">שירותים</a></li>
+    <li><a href="#portfolio">עבודות</a></li>
+    <li><a href="#contact" class="nav-btn">צרי קשר</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-mesh"></div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      <span>עיצוב גרפי · שיווק דיגיטלי · מומחית AI</span>
+    </div>
+    <h1 class="stagger-parent">
+      <span class="stagger-line"><span>יצירה</span></span>
+      <span class="stagger-line"><span><em>פוגשת בינה</em></span></span>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">עיצוב שמדבר אל הלב, שיווק שמייצר תוצאות — אני Lily, ואני כאן כדי שהעסק שלך יבלוט.</p>
+      <a href="#contact" class="hero-link">בואי נדבר ←</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div></div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="inner">
+    <div class="stat-item reveal">
+      <div class="stat-n">+50</div>
+      <div class="stat-l">לקוחות מרוצות</div>
+    </div>
+    <div class="stat-item reveal d1">
+      <div class="stat-n">+8</div>
+      <div class="stat-l">כלי AI מתקדמים</div>
+    </div>
+    <div class="stat-item reveal d2">
+      <div class="stat-n">+3</div>
+      <div class="stat-l">שנות ניסיון</div>
+    </div>
+    <div class="stat-item reveal d3">
+      <div class="stat-n">+5</div>
+      <div class="stat-l">תחומי התמחות</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about">
+    <div class="about-img-side reveal">
+      <img src="/mnt/user-data/uploads/Lily___Moshe__48_.JPG" alt="Lily" class="about-photo">
+      <div class="about-stat">
+        <div class="n">50+</div>
+        <div class="l">לקוחות מרוצות</div>
+      </div>
+    </div>
+    <div>
+      <div class="about-label reveal">קצת עלי</div>
+      <h2 class="reveal d1">היי, אני <em>Lily</em> —<br>Creative Boss</h2>
+      <p class="reveal d2">מעצבת גרפית ומומחית שיווק עם רקע ב-QA ואהבה עמוקה לכלי AI. מאמינה שעסקים קטנים מגיעים לאותה רמה כמו חברות ענק.</p>
+      <p class="reveal d3">יצרתי את Lifebooks.online מאפס, ועובדת עם Claude, Midjourney, Runway וכלים מתקדמים כדי לתת ללקוחות שלי יתרון אמיתי.</p>
+      <div class="skills reveal d4">
+        <span class="skill">עיצוב גרפי</span>
+        <span class="skill">ברנדינג</span>
+        <span class="skill">כלי AI</span>
+        <span class="skill">Midjourney</span>
+        <span class="skill">שיווק דיגיטלי</span>
+        <span class="skill">QA</span>
+        <span class="skill">בניית אתרים</span>
+        <span class="skill">Canva Pro</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shimmer-div"></div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-head">
+      <h2 class="reveal">מה אני<br><em>עושה</em></h2>
+      <p class="reveal d2">פתרונות מותאמים אישית — לא תבניות גנריות.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card reveal tilt beam">
+        <span class="svc-card-icon">🎨</span>
+        <div class="svc-card-n">01</div>
+        <div class="svc-card-name">עיצוב גרפי וברנדינג</div>
+        <div class="svc-card-tags">
+          <span class="svc-card-tag">לוגו</span><span class="svc-card-tag">זהות מותגית</span><span class="svc-card-tag">קולטרלים</span>
+        </div>
+        <span class="svc-card-arr">←</span>
+      </div>
+      <div class="svc-card reveal d1 tilt beam">
+        <span class="svc-card-icon">📱</span>
+        <div class="svc-card-n">02</div>
+        <div class="svc-card-name">שיווק דיגיטלי</div>
+        <div class="svc-card-tags">
+          <span class="svc-card-tag">אינסטגרם</span><span class="svc-card-tag">טיקטוק</span><span class="svc-card-tag">קופי</span>
+        </div>
+        <span class="svc-card-arr">←</span>
+      </div>
+      <div class="svc-card reveal d2 tilt beam">
+        <span class="svc-card-icon">🤖</span>
+        <div class="svc-card-n">03</div>
+        <div class="svc-card-name">פתרונות בינה מלאכותית</div>
+        <div class="svc-card-tags">
+          <span class="svc-card-tag">Claude</span><span class="svc-card-tag">Midjourney</span><span class="svc-card-tag">Runway</span>
+        </div>
+        <span class="svc-card-arr">←</span>
+      </div>
+      <div class="svc-card reveal d3 tilt beam">
+        <span class="svc-card-icon">🌐</span>
+        <div class="svc-card-n">04</div>
+        <div class="svc-card-name">בניית אתרים</div>
+        <div class="svc-card-tags">
+          <span class="svc-card-tag">דף נחיתה</span><span class="svc-card-tag">תיק עבודות</span><span class="svc-card-tag">עסקי</span>
+        </div>
+        <span class="svc-card-arr">←</span>
+      </div>
+      <div class="svc-card reveal d4 tilt beam" style="grid-column: 1 / -1;">
+        <span class="svc-card-icon">📐</span>
+        <div class="svc-card-n">05</div>
+        <div class="svc-card-name">תבניות Canva ו-Lifebooks</div>
+        <div class="svc-card-tags">
+          <span class="svc-card-tag">רשתות חברתיות</span><span class="svc-card-tag">Etsy</span><span class="svc-card-tag">ספרי זיכרון</span>
+        </div>
+        <span class="svc-card-arr">←</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="portfolio-head reveal">
+      <h2>עבודות<br><em>נבחרות</em></h2>
+    </div>
+
+    <div class="cat-title reveal">Chekol Event — עיצוב ומיתוג לעסק אירועים</div>
+    <div class="port-grid reveal d1">
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/57ga7LlHIqtk5JT" alt="לוגו Chekol Event">
+        <div class="pitem-info"><div class="pname">לוגו Chekol Event</div><div class="pcat">עיצוב לוגו · ברנדינג</div></div>
+      </div>
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/rOW1DeyP2rxpFRe" alt="עיצוב מסך מראת סלפי">
+        <div class="pitem-info"><div class="pname">מסך מראת סלפי 360°</div><div class="pcat">עיצוב ממשק · אירועים</div></div>
+      </div>
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/QMao4eOyKMR0tho" alt="תבנית 2x6">
+        <div class="pitem-info"><div class="pname">תבנית הדפסה 2×6</div><div class="pcat">עיצוב גרפי · Print</div></div>
+      </div>
+    </div>
+
+    <div class="cat-title reveal">Lifebooks.online — המוצר שלי</div>
+    <div class="port-grid port-grid-2 reveal d1">
+      <div class="pitem pitem-wide">
+        <img src="https://design.canva.ai/bG_JHoDsUzBmTc-" alt="Lifebooks אינפוגרפיקה">
+        <div class="pitem-info"><div class="pname">Lifebooks — אינפוגרפיקה</div><div class="pcat">עיצוב מוצר · שיווק</div></div>
+      </div>
+      <div class="pitem pitem-wide">
+        <img src="https://design.canva.ai/Ha2gCxR8pQDPkIU" alt="Lifebooks Story">
+        <div class="pitem-info"><div class="pname">Lifebooks — Story</div><div class="pcat">עיצוב רשתות חברתיות</div></div>
+      </div>
+    </div>
+
+    <div class="cat-title reveal">מוקאפים ועיצוב מותגי</div>
+    <div class="port-grid port-grid-4 reveal d1">
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/QpQmQ58G-1m_BQb" alt="Botanical Logo">
+        <div class="pitem-info"><div class="pname">Botanical Logo</div><div class="pcat">עיצוב לוגו · מוקאפ</div></div>
+      </div>
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/nl69z3G9qvJMoh3" alt="Luxury Mockup">
+        <div class="pitem-info"><div class="pname">Luxury Product</div><div class="pcat">מוקאפ · ברנדינג</div></div>
+      </div>
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/KeLK9UgLevYGZPb" alt="Elevate Brand">
+        <div class="pitem-info"><div class="pname">Elevate Brand</div><div class="pcat">עיצוב פוסטר</div></div>
+      </div>
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/Rz3sU02TVLxDuJs" alt="Brand Portfolio">
+        <div class="pitem-info"><div class="pname">Brand Portfolio</div><div class="pcat">מוקאפ · עיצוב</div></div>
+      </div>
+    </div>
+
+    <div class="cat-title reveal">מוצרי Etsy — דיגיטל ואיקומרס</div>
+    <div class="port-grid reveal d1">
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/tULMIQJ2wZUY1RU" alt="מדבקות שיער">
+        <div class="pitem-info"><div class="pname">מדבקות תוספות שיער</div><div class="pcat">עיצוב מוצר · Print</div></div>
+      </div>
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/bufRLjPly7uSp54" alt="Kids Printables">
+        <div class="pitem-info"><div class="pname">חוברות הדפסה לילדים</div><div class="pcat">Etsy · עיצוב דיגיטלי</div></div>
+      </div>
+      <div class="pitem pitem-tall">
+        <img src="https://design.canva.ai/QLaGgpnTb5KdEVp" alt="Kids Bundle">
+        <div class="pitem-info"><div class="pname">חבילת הדפסה פרימיום</div><div class="pcat">Etsy · שיווק</div></div>
+      </div>
+    </div>
+
+    <!-- קטגוריה: NOVA Pay Startup Branding -->
+    <div class="cat-title reveal">NOVA Pay — FinTech Startup Branding</div>
+    <div class="port-sub-title reveal">זהות מותגית מלאה לסטארט-אפ פיננסי</div>
+    <div class="port-grid port-grid-4 reveal d1">
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/63Kn6Hqq9lLyJc6" alt="לוגו NOVA Pay">
+        <div class="pitem-info"><div class="pname">לוגו NOVA Pay</div><div class="pcat">עיצוב לוגו · FinTech</div></div>
+      </div>
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/cgn2xCoRMb-S5zD" alt="לוגו NOVA">
+        <div class="pitem-info"><div class="pname">לוגו NOVA</div><div class="pcat">זהות מותגית</div></div>
+      </div>
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/c9thJseH-VFp9-8" alt="Social Media">
+        <div class="pitem-info"><div class="pname">Social Media</div><div class="pcat">עיצוב דיגיטלי</div></div>
+      </div>
+      <div class="pitem pitem-tall tilt beam">
+        <img src="https://design.canva.ai/JgZzZcGggZI3vYL" alt="כרטיס ביקור">
+        <div class="pitem-info"><div class="pname">כרטיס ביקור</div><div class="pcat">Print · Branding</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVA PAY CASE STUDY -->
+<section class="case-study">
+  <div class="cs-inner">
+    <div class="cs-text reveal">
+      <div class="cs-label">Case Study</div>
+      <h2>NOVA Pay — <em>Case Study</em></h2>
+      <p>ברנדינג מלא לסטארט-אפ FinTech — לוגו, זהות מותגית, Brand Guidelines, עיצוב דיגיטלי ו-Print. פרויקט שמדגים יכולת מלאה לעבודה עם חברות טכנולוגיה.</p>
+    </div>
+    <div class="cs-stats reveal d2">
+      <div class="cs-stat">
+        <div class="cs-n">5 נכסים</div>
+        <div class="cs-l">Brand Assets</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-n">48h</div>
+        <div class="cs-l">זמן מסירה</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-n">FinTech</div>
+        <div class="cs-l">תחום</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFEBOOKS -->
+<section class="lifebooks">
+  <div class="lb-inner">
+    <div>
+      <div class="lb-label reveal">המוצר שלי</div>
+      <h2 class="lb-h2 reveal d1">ספרי זיכרון<br><em>דיגיטליים</em></h2>
+      <p class="lb-p reveal d2">Lifebooks.online — מוצר שיצרתי מאפס. ספרי זיכרון אישיים ומרגשים לכל אירוע מיוחד, מבוססי AI.</p>
+      <div class="lb-feats reveal d3">
+        <div class="lb-feat"><div class="lb-dot"></div>עיצוב מותאם אישית לכל לקוח</div>
+        <div class="lb-feat"><div class="lb-dot"></div>מוצר דיגיטלי — זמין מיידית</div>
+        <div class="lb-feat"><div class="lb-dot"></div>מתנה מושלמת לכל אירוע</div>
+      </div>
+      <a href="https://lifebooks.online" target="_blank" class="btn-rose reveal d4">לגלות את Lifebooks ←</a>
+    </div>
+    <div class="lb-visual reveal d2">
+      <div class="lb-card">
+        <div class="lb-card-title">Lifebooks</div>
+        <div class="lb-card-sub">ONLINE ✦</div>
+        <div class="lb-badge"><strong>🎁 מתנה</strong>ספר זיכרון</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="testi-inner">
+    <h2 class="reveal">לקוחות<br><em>מספרות</em></h2>
+    <div class="testi-grid">
+      <div class="tcard reveal tilt beam">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Lily הפכה את הברנד שלי ממשהו גנרי למשהו שאני גאה להציג. הבינה בדיוק מה רציתי."</blockquote>
+        <div class="tauthor"><div class="tav">מ</div><div><div class="tname">מיכל כהן</div><div class="ttitle">בעלת עסק לקייטרינג</div></div></div>
+      </div>
+      <div class="tcard reveal d1 tilt beam">
+        <div class="stars">★★★★★</div>
+        <blockquote>"הזמנתי Lifebook לחתונה של חברה שלי והיא בכתה. מוצר כל כך מרגש ואיכותי."</blockquote>
+        <div class="tauthor"><div class="tav">ש</div><div><div class="tname">שירי לוי</div><div class="ttitle">לקוחה, Lifebooks</div></div></div>
+      </div>
+      <div class="tcard reveal d2 tilt beam">
+        <div class="stars">★★★★★</div>
+        <blockquote>"קיבלתי אתר מושלם תוך 48 שעות — מעוצב, מהיר ומדויק למה שרציתי."</blockquote>
+        <div class="tauthor"><div class="tav">ד</div><div><div class="tname">דנה גורן</div><div class="ttitle">מאמנת כושר</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-label">צרי קשר</div>
+    <h2>בואי <em>נדבר</em></h2>
+    <p class="contact-sub">השאירי פרטים ואחזור אליך תוך 24 שעות</p>
+    <form action="https://formspree.io/f/xgorqrnr" method="POST" id="contactForm">
+      <div class="frow">
+        <div class="fg"><label>שם</label><input type="text" name="name" placeholder="השם שלך" required></div>
+        <div class="fg"><label>טלפון / אימייל</label><input type="text" name="contact" placeholder="איך ליצור קשר" required></div>
+      </div>
+      <div class="fg">
+        <label>מה את צריכה?</label>
+        <select name="service"><option>בחרי שירות...</option><option>עיצוב גרפי</option><option>בניית אתר</option><option>שיווק דיגיטלי</option><option>תבניות Canva</option><option>Lifebook</option><option>פתרון AI</option></select>
+      </div>
+      <div class="fg"><label>ספרי לי עוד</label><textarea name="message" placeholder="קצת על הפרויקט שלך..."></textarea></div>
+      <button type="submit" class="fsub" id="submitBtn">שליחה ✦</button>
+      <p id="formSuccess">תודה! אחזור אליך תוך 24 שעות</p>
+    </form>
+  </div>
+</section>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/972548169860?text=היי%20Lily%2C%20ראיתי%20את%20האתר%20שלך%20ורציתי%20לשאול..." class="wa-btn" target="_blank" aria-label="וואטסאפ">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="footer-logo">Lola Boss Creative Studio</div>
+  <p>© 2025 · נבנה עם ♥ ו-AI · ישראל</p>
+  <div class="footer-links">
+    <a href="#">אינסטגרם</a>
+    <a href="#">טיקטוק</a>
+    <a href="https://lifebooks.online">Lifebooks</a>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r'),glow=document.getElementById('cursorGlow');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  glow.style.left=mx+'px';glow.style.top=my+'px';
+});
+(function a(){
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  curR.style.left=rx+'px';curR.style.top=ry+'px';
+  requestAnimationFrame(a);
+})();
+document.querySelectorAll('a,button,.svc-card,.pitem,.tcard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';curR.style.opacity='.12';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';curR.style.opacity='.45';});
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal,.stagger-parent').forEach(el=>obs.observe(el));
+
+// 3D Tilt
+document.querySelectorAll('.tilt').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=e.clientX-r.left,y=e.clientY-r.top;
+    const cx=r.width/2,cy=r.height/2;
+    card.style.transform=`perspective(800px) rotateX(${((y-cy)/cy)*6}deg) rotateY(${-((x-cx)/cx)*6}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave',()=>{ card.style.transform='perspective(800px) rotateX(0) rotateY(0) scale(1)'; });
+});
+
+// Magnetic buttons
+document.querySelectorAll('.btn-rose,.nav-btn,.fsub').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.25}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{ btn.style.transform='translate(0,0)'; });
+});
+
+// Hero
+setTimeout(()=>document.getElementById('heroBg').classList.add('loaded'),100);
+setTimeout(()=>{ document.querySelector('.hero h1.stagger-parent')?.classList.add('visible'); },400);
+
+// Form
+const form=document.getElementById('contactForm');
+if(form){form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='שולח...';btn.disabled=true;
+  try{
+    const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+    if(res.ok){form.reset();document.getElementById('formSuccess').style.display='block';btn.style.display='none';}
+    else{btn.textContent='שגיאה — נסי שוב';btn.disabled=false;}
+  }catch{btn.textContent='שגיאה — נסי שוב';btn.disabled=false;}
+});}
+</script>
+</body>
+</html>
