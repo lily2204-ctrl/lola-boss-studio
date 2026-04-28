@@ -788,6 +788,19 @@ if(form){form.addEventListener('submit',async e=>{
   }catch{btn.textContent='שגיאה — נסי שוב';btn.disabled=false;}
 });}
 
+</script>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕</button>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-caption">
+    <div class="lb-name" id="lb-name"></div>
+    <div class="lb-cat" id="lb-cat"></div>
+  </div>
+</div>
+
+<script>
 // Lightbox
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lb-img');
@@ -818,16 +831,6 @@ function closeLb() {
   setTimeout(() => { lbImg.src = ''; }, 300);
 }
 </script>
-
-<!-- LIGHTBOX -->
-<div id="lightbox">
-  <button id="lb-close">✕</button>
-  <img id="lb-img" src="" alt="">
-  <div id="lb-caption">
-    <div class="lb-name" id="lb-name"></div>
-    <div class="lb-cat" id="lb-cat"></div>
-  </div>
-</div>
 
 </body>
 </html>
